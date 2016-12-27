@@ -33,7 +33,7 @@ public class TestPaymentStatus extends AbstractTestCase {
 		assertEquals(new BigDecimal(100l), paymentStatus.getAmount());
 		assertEquals("CC", paymentStatus.getPaymentType().toString());
 		assertNotNull(paymentStatus.getmPayTid());
-		assertEquals(getRandomTransactionId(), paymentStatus.getTransactionId());
+		assertEquals("1", paymentStatus.getTransactionId());
 
 	}
 
@@ -47,7 +47,7 @@ public class TestPaymentStatus extends AbstractTestCase {
 		assertEquals(new BigDecimal(100l), paymentStatus.getAmount());
 		assertEquals("CC", paymentStatus.getPaymentType().toString());
 		assertNotNull(paymentStatus.getmPayTid());
-		assertEquals(getRandomTransactionId(), paymentStatus.getTransactionId());
+		assertEquals("1", paymentStatus.getTransactionId());
 
 	}
 
