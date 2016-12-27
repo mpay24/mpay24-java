@@ -38,7 +38,6 @@ public class TestCapture extends AbstractTestCase {
 	public void testPartialCapturePaymentWithMpaytid() throws ParseException, PaymentException {
 		Payment payment = mpay24.payment(getTestPaymentRequest(), getVisaTestData());
 		payment = mpay24.capture(payment.getmPayTid(), new BigDecimal(0.1));
-		payment = mpay24.capture(payment.getmPayTid(), new BigDecimal(0.1));
 		assertEquals("OK", payment.getReturnCode());
 		assertEquals("BILLED", payment.getState().toString());
 		assertNotNull(payment.getmPayTid());
