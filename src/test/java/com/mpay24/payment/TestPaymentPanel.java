@@ -22,7 +22,7 @@ public class TestPaymentPanel extends AbstractSeleniumTestcase {
 
 	@After
 	public void tearDown() throws Exception {
-//		closeFirefox();
+		closeFirefox();
 	}
 
 	@Test
