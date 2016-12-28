@@ -32,10 +32,10 @@ Payment response = mpay24.paymentPage(getTestPaymentRequest());
 String redirectURL = response.getRedirectLocation();
   
 protected PaymentRequest getTestPaymentRequest() {
-		PaymentRequest paymentRequest = new PaymentRequest();
-		paymentRequest.setAmount(new BigDecimal(1));
-		paymentRequest.setTransactionID("1");
-		return paymentRequest;
+	PaymentRequest paymentRequest = new PaymentRequest();
+	paymentRequest.setAmount(new BigDecimal(1));
+	paymentRequest.setTransactionID("1");
+	return paymentRequest;
 }
 ```
 Beside the mandatory PaymentRequest there are optional parameter that can be provided like Customer, ShoppingCart and StylingOptions.
@@ -47,12 +47,12 @@ Payment is used if the merchant wants the customer to enter the payment data on 
 Payment response = mpay24.payment(getTestPaymentRequest(), getVisaTestData());
 
 protected PaymentTypeData getVisaTestData() throws ParseException {
-		CreditCardPaymentType paymentType = new CreditCardPaymentType();
-		paymentType.setPan("4444333322221111");
-		paymentType.setCvc("123");
-		paymentType.setExpiry(getCreditCardMonthYearDate("12/2016"));
-		paymentType.setBrand(CreditCardPaymentType.Brand.VISA);
-		return paymentType;
+	CreditCardPaymentType paymentType = new CreditCardPaymentType();
+	paymentType.setPan("4444333322221111");
+	paymentType.setCvc("123");
+	paymentType.setExpiry(getCreditCardMonthYearDate("12/2016"));
+	paymentType.setBrand(CreditCardPaymentType.Brand.VISA);
+	return paymentType;
 }
 ```
 
