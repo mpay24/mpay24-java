@@ -19,7 +19,7 @@ Documentation is available at https://docs.mpay24.com/docs/java-sdk.
 
 ## SDK Overview
 ### mpay24 class
-The Mpay24 class is instantiated using your merchant id, your soap password and the environment you are connecting to (TEST or PRODUCTION):
+The Mpay24 class is instantiated using your merchant id, your soap password and the environment you are connecting to (`TEST` or `PRODUCTION`):
 ```java
 Mpay24 mpay24 = new Mpay24("merchantID", "password", Environment.TEST);
 ```
