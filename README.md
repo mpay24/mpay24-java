@@ -1,6 +1,10 @@
 # mpay24-java
 Offical mPAY24 Java Payment SDK
 
+## Requirements
+
+Java 1.6 or later.
+
 ## Installation
 ```xml
 <dependency>
@@ -9,8 +13,6 @@ Offical mPAY24 Java Payment SDK
     <version>1.0.0.0</version>
 </dependency>
 ```
-
-`mvn install`
 
 ## Documentation
 
