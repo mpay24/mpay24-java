@@ -26,7 +26,7 @@ public class TestPaymentStatus extends AbstractTestCase {
 	@Test
 	public void testPaymentStatusUsingPaymentObject() throws PaymentException, ParseException {
 		Payment payment = mpay24.payment(getTestPaymentRequest(), getVisaTestData());
-		Payment paymentStatus = mpay24.paymentStatus(payment);
+		Payment paymentStatus = mpay24.paymentDetails(payment);
 		assertNotNull(paymentStatus);
 		assertEquals("BILLED", paymentStatus.getState().toString());
 		assertEquals("EUR", paymentStatus.getCurrency());
@@ -40,7 +40,7 @@ public class TestPaymentStatus extends AbstractTestCase {
 	@Test
 	public void testPaymentStatusUsingMpayTid() throws PaymentException, ParseException {
 		Payment payment = mpay24.payment(getTestPaymentRequest(), getVisaTestData());
-		Payment paymentStatus = mpay24.paymentStatus(payment.getmPayTid());
+		Payment paymentStatus = mpay24.paymentDetails(payment.getmPayTid());
 		assertNotNull(paymentStatus);
 		assertEquals("BILLED", paymentStatus.getState().toString());
 		assertEquals("EUR", paymentStatus.getCurrency());
@@ -55,7 +55,7 @@ public class TestPaymentStatus extends AbstractTestCase {
 	public void testPaymentStatusUsingTransactionId() throws PaymentException, ParseException {
 		String tid = getRandomTransactionId();
 		Payment payment = mpay24.payment(getTestPaymentRequest(tid, 1l), getVisaTestData());
-		Payment paymentStatus = mpay24.paymentStatus(tid);
+		Payment paymentStatus = mpay24.paymentDetails(tid);
 		assertNotNull(paymentStatus);
 		assertEquals("BILLED", paymentStatus.getState().toString());
 		assertEquals("EUR", paymentStatus.getCurrency());

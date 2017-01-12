@@ -107,16 +107,16 @@ public class Mpay24 {
 		return soapCommunication.transactionHistory(payment);
 	}
 	
-	public Payment paymentStatus(BigInteger mPayTid) throws PaymentException {
-		return paymentStatus(mPayTid, null);
+	public Payment paymentDetails(BigInteger mPayTid) throws PaymentException {
+		return paymentDetails(mPayTid, null);
 	}
-	public Payment paymentStatus(String transactionId) throws PaymentException {
-		return paymentStatus(null, transactionId);
+	public Payment paymentDetails(String transactionId) throws PaymentException {
+		return paymentDetails(null, transactionId);
 	}
-	private Payment paymentStatus(BigInteger mPayTid, String transactionId) throws PaymentException {
+	private Payment paymentDetails(BigInteger mPayTid, String transactionId) throws PaymentException {
 		return soapCommunication.transactionStatus(mPayTid, transactionId);
 	}
-	public Payment paymentStatus(Payment payment) throws PaymentException {
+	public Payment paymentDetails(Payment payment) throws PaymentException {
 		return soapCommunication.transactionStatus(payment);
 	}
 	
@@ -154,15 +154,15 @@ public class Mpay24 {
 		return soapCommunication.token(tokenRequest);
 	}
 	
-	public List<Payment> uncapturedPayments(Long begin, Long size, SortField sortField, SortType sortType, Boolean listInProgress) throws PaymentException {
+	public List<Payment> listAuthorizations(Long begin, Long size, SortField sortField, SortType sortType, Boolean listInProgress) throws PaymentException {
 		return soapCommunication.listNotCleared(begin, size, sortField, sortType, listInProgress);
 	}
 	
-	public List<PaymentData> storedPaymentDataList(String customerId, Date expiredBy, Long begin, Long size) throws PaymentException {
+	public List<PaymentData> listCustomers(String customerId, Date expiredBy, Long begin, Long size) throws PaymentException {
 		return soapCommunication.listProfiles(customerId, expiredBy, begin, size);
 	}
 	
-	public void deleteStoredPaymentData(String customerId, String profileId) throws PaymentException {
+	public void deleteCustomer(String customerId, String profileId) throws PaymentException {
 		soapCommunication.deleteProfile(customerId, profileId);
 	}
 

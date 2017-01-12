@@ -10,7 +10,7 @@ import com.mpay24.payment.data.Payment;
 
 public class TestCancel extends AbstractTestCase {
 	public final static Logger log = Logger.getLogger(TestCancel.class);
-	protected Mpay24 mpay24 = new Mpay24("80005", "*******", Environment.TEST);
+	protected Mpay24 mpay24 = new Mpay24("80005", "******", Environment.TEST);
 
 	@Test
 	public void testCancelPayment() throws ParseException, PaymentException {

@@ -1,8 +1,12 @@
 package com.mpay24.payment;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -17,9 +21,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.mpay24.payment.data.Payment;
 import com.mpay24.payment.data.PaymentData;
+import com.mpay24.payment.type.DirectDebitPaymentType.Brand;
 import com.mpay24.payment.type.RecurringCreditCardPaymentType;
 import com.mpay24.payment.type.RecurringDirectDebitPaymentType;
-import com.mpay24.payment.type.DirectDebitPaymentType.Brand;
 
 public class TestRecurringPayments extends AbstractSeleniumTestcase {
 	public final static Logger log = Logger.getLogger(TestRecurringPayments.class);
@@ -57,7 +61,7 @@ public class TestRecurringPayments extends AbstractSeleniumTestcase {
 		deleteProfileForTest(customerId);
 		mpay24.payment(getTestRecurringPaymentRequest(), getVisaTestData(), getCustomer(customerId, "Test Stored Payment"));
 
-		List<PaymentData> storedPaymentDataList = mpay24.storedPaymentDataList(customerId, null, null, null);
+		List<PaymentData> storedPaymentDataList = mpay24.listCustomers(customerId, null, null, null);
 		assertNotNull(storedPaymentDataList);
 		assertTrue(storedPaymentDataList.size() > 0);
 		
@@ -74,7 +78,7 @@ public class TestRecurringPayments extends AbstractSeleniumTestcase {
 		
 		doCreditCardPaymentOnPaymentPanel(response);
 		
-		List<PaymentData> storedPaymentDataList = mpay24.storedPaymentDataList(customerId, null, 0l, 10l);
+		List<PaymentData> storedPaymentDataList = mpay24.listCustomers(customerId, null, 0l, 10l);
 		assertNotNull(storedPaymentDataList);
 		assertTrue(storedPaymentDataList.size() > 0);
 		
@@ -89,16 +93,20 @@ public class TestRecurringPayments extends AbstractSeleniumTestcase {
 		driver.findElement(By.id("cardnumber")).sendKeys("4444333322221111");
 		driver.findElement(By.id("cvc")).sendKeys("123");
 		(new Select(driver.findElement(By.id("expiry-month")))).selectByValue("12");
-		(new Select(driver.findElement(By.id("expiry-year")))).selectByValue("16");
+		(new Select(driver.findElement(By.id("expiry-year")))).selectByValue(getYear());
 		
 		driver.findElement(By.id("right")).click();
 		wait.until(ExpectedConditions.elementToBeClickable(By.id("right")));
 		driver.findElement(By.id("right")).click();
 	}
 
+	private String getYear() {
+		return new SimpleDateFormat("yy").format(new Date());
+	}
+
 	private void deleteProfileForTest(String customerId) {
 		try {
-			mpay24.deleteStoredPaymentData(customerId, null);
+			mpay24.deleteCustomer(customerId, null);
 		} catch (PaymentException e) {
 			// OK if Profile does not exist
 		}
