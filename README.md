@@ -1,16 +1,18 @@
 # mpay24-java
 Offical mPAY24 Java Payment SDK
 
+## Requirements
+
+Java 1.6 or later.
+
 ## Installation
 ```xml
 <dependency>
     <groupId>com.mpay24.payment</groupId>
     <artifactId>mpay24-payment-sdk</artifactId>
-    <version>1.0.0.0</version>
+    <version>1.1.0.0</version>
 </dependency>
 ```
-
-`mvn install`
 
 ## Documentation
 
@@ -19,9 +21,9 @@ Documentation is available at https://docs.mpay24.com/docs/java-sdk.
 
 ## SDK Overview
 ### mpay24 class
-The Mpay24 class is instantiated using your merchant id, your soap password and the environment you are connecting to (TEST or PRODUCTION):
+The Mpay24 class is instantiated using your merchant id, your soap password and the environment you are connecting to (`TEST` or `PRODUCTION`):
 ```java
-Mpay24 mpay24 = new Mpay24("93975", "xxx", Environment.TEST);
+Mpay24 mpay24 = new Mpay24("merchantID", "password", Environment.TEST);
 ```
 
 ### payment page (redirect integration)
@@ -32,10 +34,10 @@ Payment response = mpay24.paymentPage(getTestPaymentRequest());
 String redirectURL = response.getRedirectLocation();
   
 protected PaymentRequest getTestPaymentRequest() {
-    PaymentRequest paymentRequest = new PaymentRequest();
-    paymentRequest.setAmount(new BigDecimal(1));
-    paymentRequest.setTransactionID("1");
-    return paymentRequest;
+	PaymentRequest paymentRequest = new PaymentRequest();
+	paymentRequest.setAmount(new BigDecimal(1));
+	paymentRequest.setTransactionID("1");
+	return paymentRequest;
 }
 ```
 Beside the mandatory PaymentRequest there are optional parameter that can be provided like Customer, ShoppingCart and StylingOptions.
@@ -46,14 +48,14 @@ Payment is used if the merchant wants the customer to enter the payment data on 
 ```java
 Payment response = mpay24.payment(getTestPaymentRequest(), getVisaTestData());
 
-  protected PaymentTypeData getVisaTestData() throws ParseException {
-    CreditCardPaymentType paymentType = new CreditCardPaymentType();
-    paymentType.setPan("4444333322221111");
-    paymentType.setCvc("123");
-    paymentType.setExpiry(getCreditCardMonthYearDate("12/2016"));
-    paymentType.setBrand(CreditCardPaymentType.Brand.VISA);
-    return paymentType;
-  }
+protected PaymentTypeData getVisaTestData() throws ParseException {
+	CreditCardPaymentType paymentType = new CreditCardPaymentType();
+	paymentType.setPan("4444333322221111");
+	paymentType.setCvc("123");
+	paymentType.setExpiry(getCreditCardMonthYearDate("12/2016"));
+	paymentType.setBrand(CreditCardPaymentType.Brand.VISA);
+	return paymentType;
+}
 ```
 
 ### paymentStatus 
@@ -61,17 +63,17 @@ You can retrieve the status for a single payment at any time using the paymentSt
 Alternative is a method that uses either the mpaytid which is the unique transaction identifier provided by mpay24 or the transaction id provided by the merchant.
 
 ```java
-Payment paymentStatus = mpay24.paymentStatus(payment);
+Payment paymentDetails = mpay24.paymentDetails(payment);
 ```
 
-Return paymentStatus using the mpaytid:
+Return paymentDetails using the mpaytid:
 ```java
-Payment paymentStatus = mpay24.paymentStatus(new BigInteger(1));
+Payment paymentStatus = mpay24.paymentDetails(new BigInteger(1));
 ```
 
 Return paymentStatus using the merchant specified transaction identifier:
 ```java
-Payment paymentStatus = mpay24.paymentStatus("83423984");
+Payment paymentStatus = mpay24.paymentDetails("83423984");
 ```
 
 ### cancel 
