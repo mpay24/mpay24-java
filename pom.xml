@@ -5,7 +5,7 @@
 
 	<groupId>com.mpay24.payment</groupId>
 	<artifactId>mpay24-payment-sdk</artifactId>
-	<version>1.1.0.0</version>
+	<version>1.2.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -58,9 +58,59 @@
 
 	<build>
 		<plugins>
+		<!-- OSGI Bundle Plugin -->
+		<!--  plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.6</version>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>src/main/resources/META-INF</manifestLocation>
+					<excludeDependencies>${maven.bundleplugin.exclude.dependencies}</excludeDependencies>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Name>${project.name}</Bundle-Name>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-Activator></Bundle-Activator>
+						<Import-Package>*</Import-Package>
+						<Export-Package>*</Export-Package>
+						<Private-Package></Private-Package>
+						<Web-ContextPath></Web-ContextPath>
+						<Webapp-Context></Webapp-Context>
+						<Bundle-ClassPath></Bundle-ClassPath>
+						<Embed-Dependency></Embed-Dependency>
+						<Embed-Directory></Embed-Directory>
+						<Embed-Transitive></Embed-Transitive>
+					</instructions>
+					<supportedProjectTypes>
+						<supportedProjectType>jar</supportedProjectType>
+						<supportedProjectType>bundle</supportedProjectType>
+						<supportedProjectType>war</supportedProjectType>
+					</supportedProjectTypes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.10.4</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -73,6 +123,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -108,13 +159,44 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<!--This plugin's configuration is used to store Eclipse m2e settings only. 
+			It has no influence on the Maven build itself. -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.felix</groupId>
+										<artifactId>maven-bundle-plugin</artifactId>
+										<versionRange>2.3.6</versionRange>
+										<goals>
+											<goal>manifest</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.mpay24.payment</groupId>
 			<artifactId>mpay24-soap-client</artifactId>
-			<version>1.1.0.0</version>
+			<version>1.2.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
