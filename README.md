@@ -10,7 +10,7 @@ Java 1.6 or later.
 <dependency>
     <groupId>com.mpay24.payment</groupId>
     <artifactId>mpay24-payment-sdk</artifactId>
-    <version>1.1.0.0</version>
+    <version>1.2.0.0</version>
 </dependency>
 ```
 
