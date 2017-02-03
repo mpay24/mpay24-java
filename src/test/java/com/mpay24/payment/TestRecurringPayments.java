@@ -92,7 +92,7 @@ public class TestRecurringPayments extends AbstractSeleniumTestcase {
 		
 		driver.findElement(By.id("cardnumber")).sendKeys("4444333322221111");
 		driver.findElement(By.id("cvc")).sendKeys("123");
-		(new Select(driver.findElement(By.id("expiry-month")))).selectByValue("12");
+		(new Select(driver.findElement(By.id("expiry-month")))).selectByValue("05");
 		(new Select(driver.findElement(By.id("expiry-year")))).selectByValue(getYear());
 		
 		driver.findElement(By.id("right")).click();
