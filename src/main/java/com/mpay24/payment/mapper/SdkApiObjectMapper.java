@@ -20,6 +20,7 @@ import com.mpay.soap.client.PaymentGIROPAY;
 import com.mpay.soap.client.PaymentKLARNA;
 import com.mpay.soap.client.PaymentPAYPAL;
 import com.mpay.soap.client.PaymentPB;
+import com.mpay.soap.client.PaymentTOKEN;
 import com.mpay.soap.client.PaymentType;
 import com.mpay.soap.client.ProfilePaymentCC;
 import com.mpay.soap.client.ProfilePaymentELV;
@@ -39,6 +40,7 @@ import com.mpay24.payment.type.PaysafecardPaymentType;
 import com.mpay24.payment.type.QuickPaymentType;
 import com.mpay24.payment.type.RecurringCreditCardPaymentType;
 import com.mpay24.payment.type.RecurringDirectDebitPaymentType;
+import com.mpay24.payment.type.TokenPaymentType;
 
 public class SdkApiObjectMapper {
 
@@ -77,6 +79,8 @@ public class SdkApiObjectMapper {
 			return mapRedirectPaymentSystemData(paymentRequest);
 		} else if (paymentType instanceof QuickPaymentType) {
 			return mapRedirectPaymentSystemData(paymentRequest);
+		} else if (paymentType instanceof TokenPaymentType) {
+			return mapRedirectPaymentSystemData(paymentRequest, (TokenPaymentType) paymentType);
 		} else {
 			return null;
 		}
@@ -264,6 +268,17 @@ public class SdkApiObjectMapper {
 		payment.setProfileID(paymentRequest.getStoredPaymentDataId());
 		return payment;
 	}
+
+	private Payment mapRedirectPaymentSystemData(PaymentRequest paymentRequest, TokenPaymentType paymentType) {
+		PaymentTOKEN payment = new PaymentTOKEN();
+		payment.setAmount(convertBigDecimalToInteger(paymentRequest.getAmount()));
+		payment.setCurrency(paymentRequest.getCurrency());
+		payment.setUseProfile(paymentRequest.isSavePaymentData());
+		payment.setProfileID(paymentRequest.getStoredPaymentDataId());
+		payment.setToken(paymentType.getToken());
+		return payment;
+	}
+
 
 	protected Long getExpiredateAsLong(Date expiryDate) {
 		String expiryDateAsString = new SimpleDateFormat("yyMM").format(expiryDate);
