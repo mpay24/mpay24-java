@@ -14,7 +14,7 @@ public class AbstractSeleniumTestcase extends AbstractTestCase {
 //	ChromeDriver chromeDriver;
 
 	protected RemoteWebDriver openFirefoxAtUrl(String url) {
-		System.setProperty("webdriver.gecko.driver", "/Users/rene.felder/Documents/mpay24/Development/Geckodriver/geckodriver");
+		System.setProperty("webdriver.gecko.driver", "/Users/rene.felder/Documents/company/partner/mpay24/Development/Geckodriver/geckodriver");
 		driver = new FirefoxDriver();
 		driver.get(url);
 		return driver;
