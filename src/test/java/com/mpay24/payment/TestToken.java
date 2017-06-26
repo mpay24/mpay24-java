@@ -25,7 +25,7 @@ public class TestToken extends AbstractSeleniumTestcase {
 
 	@After
 	public void tearDown() throws Exception {
-		closeFirefox();
+//		closeFirefox();
 	}
 
 

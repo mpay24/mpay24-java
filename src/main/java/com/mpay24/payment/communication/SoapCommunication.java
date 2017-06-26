@@ -2,12 +2,15 @@ package com.mpay24.payment.communication;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Holder;
 
@@ -50,8 +53,6 @@ public class SoapCommunication {
 	private String merchantId;
 	private String password;
 	private Environment mode;
-
-	private ETP_Service mpaySoapService = new ETP_Service();
 
 	public SoapCommunication(String merchantId, String password, Environment mode) {
 		super();
@@ -214,6 +215,17 @@ public class SoapCommunication {
 		checkForError(statusHolder, returnCodeHolder);
 		return getPaymentList(returnCodeHolder, transactionDetailsHolder);
 	}
+
+	
+	public void createCustomer(String customerId, String customerName, PaymentType pType, com.mpay.soap.client.PaymentData paymentData) {
+		Holder<Status> statusHolder = new Holder<Status>();
+		Holder<String> returnCodeHolder = new Holder<String>();
+		Holder<Integer> errorNumberHolder = new Holder<Integer>();
+		Holder<String> errorTextHolder = new Holder<String>();
+
+		getSoapClientProxy().createCustomer(getMerchantIdAsLong(), pType, paymentData, customerId, customerName, (com.mpay.soap.client.Address)null, (String) null, statusHolder, returnCodeHolder, errorNumberHolder, errorTextHolder);
+	}
+
 
 	public List<PaymentData> listProfiles(String customerId, Date expiredBy, Long begin, Long size) throws PaymentException {
 		Holder<Status> statusHolder = new Holder<Status>();
@@ -391,7 +403,9 @@ public class SoapCommunication {
 	}
 
 	private ETP getSoapClientProxy() {
-		ETP etp = mpaySoapService.getETP();
+		QName qname = new QName("https://www.mpay24.com/soap/etp/1.5/ETP.wsdl", "ETP");
+		ETP_Service etpService = getEtpService(qname);
+		ETP etp = etpService.getETP();
 		setBindingParameter(etp);
 		Client cxfClient = getSoapClient(etp);
 
@@ -399,6 +413,15 @@ public class SoapCommunication {
 			disableCertificateChecks(cxfClient);
 
 		return etp;
+	}
+
+	private ETP_Service getEtpService(QName qname){
+		try {
+			return new ETP_Service(new URL(mode.getWsdlUrl()), qname);
+		} catch (MalformedURLException e) {
+			logger.error("Error connecting to Soap Endpoint: " + e.getMessage(), e);
+			throw new RuntimeException("Error connecting to Soap Endpoint: " + e.getMessage(), e);
+		}
 	}
 
 	private void setBindingParameter(ETP etp) {

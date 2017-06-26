@@ -14,6 +14,10 @@ import com.mpay.soap.client.Order;
 import com.mpay.soap.client.Payment;
 import com.mpay.soap.client.PaymentBILLPAY;
 import com.mpay.soap.client.PaymentCC;
+import com.mpay.soap.client.PaymentData;
+import com.mpay.soap.client.PaymentDataCC;
+import com.mpay.soap.client.PaymentDataELV;
+import com.mpay.soap.client.PaymentDataTOKEN;
 import com.mpay.soap.client.PaymentELV;
 import com.mpay.soap.client.PaymentEPS;
 import com.mpay.soap.client.PaymentGIROPAY;
@@ -56,6 +60,56 @@ public class SdkApiObjectMapper {
 		if (customer == null)
 			return null;
 		return customer.getCustomerId();
+	}
+
+	public PaymentType mapPaymentTypeData(PaymentTypeData paymentType) {
+		if (paymentType instanceof DirectDebitPaymentType) {
+			return PaymentType.ELV;
+		} else if (paymentType instanceof CreditCardPaymentType) {
+			return PaymentType.CC;
+		} else if (paymentType instanceof CreditCardPaymentType) {
+			return PaymentType.TOKEN;
+		} else {
+			throw new UnsupportedOperationException("Currently this method only supports the following Payment types: DirectDebit, CreditCard");
+		}
+		
+	}
+
+	public PaymentData mapPaymentData(PaymentTypeData paymentType) {
+		if (paymentType instanceof DirectDebitPaymentType) {
+			return mapPaymentData((DirectDebitPaymentType)paymentType);
+		} else if (paymentType instanceof CreditCardPaymentType) {
+			return mapPaymentData((CreditCardPaymentType)paymentType);
+		} else if (paymentType instanceof TokenPaymentType) {
+			return mapPaymentData((TokenPaymentType)paymentType);
+		} else {
+			throw new UnsupportedOperationException("Currently this method only supports the following Payment types: DirectDebit, CreditCard");
+		}
+		
+	}
+
+	private PaymentData mapPaymentData(DirectDebitPaymentType paymentType) {
+		PaymentDataELV paymentData = new PaymentDataELV();
+		paymentData.setBic(paymentType.getBic());
+		paymentData.setBrand(paymentType.getBrand().name());
+		paymentData.setDateOfSignature(paymentType.getDateOfSignature());
+		paymentData.setIban(paymentType.getIban());
+		paymentData.setMandateID(paymentType.getMandateID());
+		return paymentData;
+	}
+
+	private PaymentData mapPaymentData(CreditCardPaymentType paymentType) {
+		PaymentDataCC paymentData = new PaymentDataCC();
+		paymentData.setBrand(paymentType.getBrand().name());
+		paymentData.setExpiry(getExpiredateAsLong(paymentType.getExpiry()));
+		paymentData.setIdentifier(paymentType.getPan());
+		return paymentData;
+	}
+
+	private PaymentData mapPaymentData(TokenPaymentType paymentType) {
+		PaymentDataTOKEN paymentData = new PaymentDataTOKEN();
+		paymentData.setToken(paymentType.getToken());
+		return paymentData;
 	}
 
 	public Payment mapPaymentSystemData(PaymentRequest paymentRequest, PaymentTypeData paymentType) {

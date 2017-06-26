@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.mpay.soap.client.Order;
+import com.mpay.soap.client.PaymentType;
 import com.mpay.soap.client.SortField;
 import com.mpay.soap.client.SortType;
 import com.mpay24.payment.communication.SoapCommunication;
@@ -33,17 +34,24 @@ public class Mpay24 {
 	private SoapCommunication soapCommunication;
 
 	public enum Environment {
-		INTEGRATION("https://it.mpay24.com/app/bin/etpproxy_v15"), TEST("https://test.mpay24.com/app/bin/etpproxy_v15"), PRODUCTION(
-						"https://www.mpay24.com/app/bin/etpproxy_v15");
+		INTEGRATION("https://it.mpay24.com/app/bin/etpproxy_v15", "https://it.mpay24.com/soap/etp/1.5/ETP.wsdl"), 
+		TEST("https://test.mpay24.com/app/bin/etpproxy_v15", "https://test.mpay24.com/soap/etp/1.5/ETP.wsdl"), 
+		PRODUCTION("https://www.mpay24.com/app/bin/etpproxy_v15", "https://www.mpay24.com/soap/etp/1.5/ETP.wsdl");
 
 		private String endpoint;
+		private String wsdlUrl;
 
-		Environment(String endpoint) {
+		Environment(String endpoint, String wsdlUrl) {
 			this.endpoint = endpoint;
+			this.wsdlUrl = wsdlUrl;
 		}
 
 		public String getEndpoint() {
 			return this.endpoint;
+		}
+
+		public String getWsdlUrl() {
+			return wsdlUrl;
 		}
 	}
 
@@ -164,6 +172,12 @@ public class Mpay24 {
 	
 	public void deleteCustomer(String customerId, String profileId) throws PaymentException {
 		soapCommunication.deleteProfile(customerId, profileId);
+	}
+	
+	public void createCustomer(Customer customer, PaymentTypeData paymentTypeData) {
+		PaymentType paymentType = mapper.mapPaymentTypeData(paymentTypeData);
+		com.mpay.soap.client.PaymentData paymentData = mapper.mapPaymentData(paymentTypeData);
+		soapCommunication.createCustomer(customer.getCustomerId(), customer.getName(), paymentType, paymentData);
 	}
 
 	private SoapCommunication getSoapCommunication() {

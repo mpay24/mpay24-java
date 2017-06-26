@@ -14,7 +14,7 @@ import com.mpay24.payment.data.Payment;
 
 public class TestCapture extends AbstractTestCase {
 	public final static Logger log = Logger.getLogger(TestCapture.class);
-	protected Mpay24 mpay24 = new Mpay24("80005", "******", Environment.TEST);
+	protected Mpay24 mpay24 = new Mpay24("80005", "03101974", Environment.TEST);
 
 	@Test
 	public void testCapturePayment() throws ParseException, PaymentException {
