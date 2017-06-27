@@ -339,7 +339,7 @@ public class SdkApiObjectMapper {
 		return Long.valueOf(expiryDateAsString);
 	}
 
-	private Address mapCustomer(Customer customer) {
+	public Address mapCustomer(Customer customer) {
 		if (customer == null)
 			return null;
 		if (customer.getAddress() == null)

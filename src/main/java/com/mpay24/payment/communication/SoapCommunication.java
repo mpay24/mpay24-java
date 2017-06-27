@@ -217,13 +217,14 @@ public class SoapCommunication {
 	}
 
 	
-	public void createCustomer(String customerId, String customerName, PaymentType pType, com.mpay.soap.client.PaymentData paymentData) {
+	public void createCustomer(String customerId, String customerName, com.mpay.soap.client.Address address, PaymentType pType, com.mpay.soap.client.PaymentData paymentData) throws PaymentException {
 		Holder<Status> statusHolder = new Holder<Status>();
 		Holder<String> returnCodeHolder = new Holder<String>();
 		Holder<Integer> errorNumberHolder = new Holder<Integer>();
 		Holder<String> errorTextHolder = new Holder<String>();
 
-		getSoapClientProxy().createCustomer(getMerchantIdAsLong(), pType, paymentData, customerId, customerName, (com.mpay.soap.client.Address)null, (String) null, statusHolder, returnCodeHolder, errorNumberHolder, errorTextHolder);
+		getSoapClientProxy().createCustomer(getMerchantIdAsLong(), pType, paymentData, customerId, customerName, address, (String) null, statusHolder, returnCodeHolder, errorNumberHolder, errorTextHolder);
+		checkForError(statusHolder, returnCodeHolder);
 	}
 
 

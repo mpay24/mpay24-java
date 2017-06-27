@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.mpay.soap.client.Address;
 import com.mpay.soap.client.Order;
 import com.mpay.soap.client.PaymentType;
 import com.mpay.soap.client.SortField;
@@ -174,10 +175,11 @@ public class Mpay24 {
 		soapCommunication.deleteProfile(customerId, profileId);
 	}
 	
-	public void createCustomer(Customer customer, PaymentTypeData paymentTypeData) {
+	public void createCustomer(Customer customer, PaymentTypeData paymentTypeData) throws PaymentException {
 		PaymentType paymentType = mapper.mapPaymentTypeData(paymentTypeData);
 		com.mpay.soap.client.PaymentData paymentData = mapper.mapPaymentData(paymentTypeData);
-		soapCommunication.createCustomer(customer.getCustomerId(), customer.getName(), paymentType, paymentData);
+		Address address = mapper.mapCustomer(customer);
+		soapCommunication.createCustomer(customer.getCustomerId(), customer.getName(), address, paymentType, paymentData);
 	}
 
 	private SoapCommunication getSoapCommunication() {
