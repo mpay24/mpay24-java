@@ -43,6 +43,7 @@ public class TestCreateCustomer extends AbstractTestCase {
 	}
 
 	@Test
+	@Ignore("Currently ELV profiles are not supported")
 	public void testCreateTwoCustomerProfilesWithAddress() throws ParseException, PaymentException {
 		String customerId = "max.mustermann@gmail.com";
 		deleteProfileForTest(customerId);
