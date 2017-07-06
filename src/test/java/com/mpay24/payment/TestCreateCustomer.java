@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mpay24.payment.data.PaymentData;
@@ -22,7 +21,6 @@ public class TestCreateCustomer extends AbstractTestCase {
 	}
 	
 	@Test
-	@Ignore("Currently this functionality is not supported")
 	public void testCreateCreditCardCustomerWithoutAddress() throws ParseException, PaymentException {
 		String customerId = "12345678987622";
 		deleteProfileForTest(customerId);
@@ -43,12 +41,11 @@ public class TestCreateCustomer extends AbstractTestCase {
 	}
 
 	@Test
-	@Ignore("Currently ELV profiles are not supported")
 	public void testCreateTwoCustomerProfilesWithAddress() throws ParseException, PaymentException {
 		String customerId = "max.mustermann@gmail.com";
 		deleteProfileForTest(customerId);
-		mpay24.createCustomer(getCustomerWithAddress(customerId, "Xenia Wiesbauer", "Grüngasse 16"), getVisaTestData());
-		mpay24.createCustomer(getCustomerWithAddress(customerId, "Xenia Wiesbauer", "Grüngasse 16"), getDirectDebitTestData(Brand.HOBEX_AT));
+		mpay24.createCustomer(getCustomerWithAddress(customerId, "Xenia Wiesbauer", "Grüngasse 16"), "x", getVisaTestData());
+		mpay24.createCustomer(getCustomerWithAddress(customerId, "Xenia Wiesbauer", "Grüngasse 16"), "y", getDirectDebitTestData(Brand.HOBEX_AT));
 		List<PaymentData> storedPaymentDataList = mpay24.listCustomers(customerId, null, null, null);
 		assertNotNull(storedPaymentDataList);
 		assertEquals(2, storedPaymentDataList.size());

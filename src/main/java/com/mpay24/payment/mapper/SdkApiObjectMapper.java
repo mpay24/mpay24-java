@@ -22,6 +22,7 @@ import com.mpay.soap.client.PaymentELV;
 import com.mpay.soap.client.PaymentEPS;
 import com.mpay.soap.client.PaymentGIROPAY;
 import com.mpay.soap.client.PaymentKLARNA;
+import com.mpay.soap.client.PaymentMAESTRO;
 import com.mpay.soap.client.PaymentPAYPAL;
 import com.mpay.soap.client.PaymentPB;
 import com.mpay.soap.client.PaymentTOKEN;
@@ -33,6 +34,7 @@ import com.mpay24.payment.data.PaymentRequest;
 import com.mpay24.payment.data.ShoppingCart;
 import com.mpay24.payment.data.ShoppingCartItem;
 import com.mpay24.payment.type.CreditCardPaymentType;
+import com.mpay24.payment.type.DebitCardPaymentType;
 import com.mpay24.payment.type.DirectDebitPaymentType;
 import com.mpay24.payment.type.InvoicePaymentType;
 import com.mpay24.payment.type.InvoicePaymentType.Brand;
@@ -75,40 +77,43 @@ public class SdkApiObjectMapper {
 		
 	}
 
-	public PaymentData mapPaymentData(PaymentTypeData paymentType) {
+	public PaymentData mapPaymentData(PaymentTypeData paymentType, String profileId) {
 		if (paymentType instanceof DirectDebitPaymentType) {
-			return mapPaymentData((DirectDebitPaymentType)paymentType);
+			return mapPaymentData((DirectDebitPaymentType)paymentType, profileId);
 		} else if (paymentType instanceof CreditCardPaymentType) {
-			return mapPaymentData((CreditCardPaymentType)paymentType);
+			return mapPaymentData((CreditCardPaymentType)paymentType, profileId);
 		} else if (paymentType instanceof TokenPaymentType) {
-			return mapPaymentData((TokenPaymentType)paymentType);
+			return mapPaymentData((TokenPaymentType)paymentType, profileId);
 		} else {
 			throw new UnsupportedOperationException("Currently this method only supports the following Payment types: DirectDebit, CreditCard");
 		}
 		
 	}
 
-	private PaymentData mapPaymentData(DirectDebitPaymentType paymentType) {
+	private PaymentData mapPaymentData(DirectDebitPaymentType paymentType, String profileId) {
 		PaymentDataELV paymentData = new PaymentDataELV();
 		paymentData.setBic(paymentType.getBic());
-		paymentData.setBrand(paymentType.getBrand().name());
+		paymentData.setBrand(paymentType.getBrand().toString());
 		paymentData.setDateOfSignature(paymentType.getDateOfSignature());
 		paymentData.setIban(paymentType.getIban());
 		paymentData.setMandateID(paymentType.getMandateID());
+		paymentData.setProfileID(profileId);
 		return paymentData;
 	}
 
-	private PaymentData mapPaymentData(CreditCardPaymentType paymentType) {
+	private PaymentData mapPaymentData(CreditCardPaymentType paymentType, String profileId) {
 		PaymentDataCC paymentData = new PaymentDataCC();
-		paymentData.setBrand(paymentType.getBrand().name());
+		paymentData.setBrand(paymentType.getBrand().toString());
 		paymentData.setExpiry(getExpiredateAsLong(paymentType.getExpiry()));
 		paymentData.setIdentifier(paymentType.getPan());
+		paymentData.setProfileID(profileId);
 		return paymentData;
 	}
 
-	private PaymentData mapPaymentData(TokenPaymentType paymentType) {
+	private PaymentData mapPaymentData(TokenPaymentType paymentType, String profileId) {
 		PaymentDataTOKEN paymentData = new PaymentDataTOKEN();
 		paymentData.setToken(paymentType.getToken());
+		paymentData.setProfileID(profileId);
 		return paymentData;
 	}
 
@@ -117,6 +122,8 @@ public class SdkApiObjectMapper {
 			return mapPaymentSystemData(paymentRequest, (DirectDebitPaymentType) paymentType);
 		} else if (paymentType instanceof CreditCardPaymentType) {
 			return mapPaymentSystemData(paymentRequest, (CreditCardPaymentType) paymentType);
+		} else if (paymentType instanceof DebitCardPaymentType) {
+			return mapPaymentSystemData(paymentRequest, (DebitCardPaymentType) paymentType);
 		} else if (paymentType instanceof InvoicePaymentType) {
 			return mapPaymentSystemData(paymentRequest, (InvoicePaymentType) paymentType);
 		} else if (paymentType instanceof OnlineBankingPaymentType) {
@@ -194,6 +201,17 @@ public class SdkApiObjectMapper {
 			payment.setBrand(paymentTypeData.getBrand().toString());
 		}
 		payment.setCvc(paymentTypeData.getCvc());
+		payment.setExpiry(getExpiredateAsLong(paymentTypeData.getExpiry()));
+		payment.setIdentifier(paymentTypeData.getPan());
+		payment.setUseProfile(paymentRequest.isSavePaymentData());
+		payment.setProfileID(paymentRequest.getStoredPaymentDataId());
+		return payment;
+	}
+
+	private Payment mapPaymentSystemData(PaymentRequest paymentRequest, DebitCardPaymentType paymentTypeData) {
+		PaymentMAESTRO payment = new PaymentMAESTRO();
+		payment.setAmount(convertBigDecimalToInteger(paymentRequest.getAmount()));
+		payment.setCurrency(paymentRequest.getCurrency());
 		payment.setExpiry(getExpiredateAsLong(paymentTypeData.getExpiry()));
 		payment.setIdentifier(paymentTypeData.getPan());
 		payment.setUseProfile(paymentRequest.isSavePaymentData());

@@ -13,6 +13,15 @@ public class Customer {
 		public String getShort() {
 			return shortcut;
 		}
+		public static Gender getEnum(String gender) {
+			if (gender == null) {
+				return Female;
+			} else if (gender.startsWith("M")) {
+				return Male;
+			} else {
+				return Female;
+			}
+		}
 	}
 	private String customerId;
 	private String name;
@@ -79,5 +88,5 @@ public class Customer {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
 }

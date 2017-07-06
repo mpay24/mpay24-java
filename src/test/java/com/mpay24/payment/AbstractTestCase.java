@@ -24,6 +24,7 @@ import com.mpay24.payment.data.ShoppingCartItem;
 import com.mpay24.payment.data.StylingOptions;
 import com.mpay24.payment.data.StylingOptions.Template;
 import com.mpay24.payment.type.CreditCardPaymentType;
+import com.mpay24.payment.type.DebitCardPaymentType;
 import com.mpay24.payment.type.DirectDebitPaymentType;
 import com.mpay24.payment.type.DirectDebitPaymentType.Brand;
 import com.mpay24.payment.type.InstallmentPaymentType;
@@ -212,6 +213,15 @@ public abstract class AbstractTestCase {
 		return paymentType;
 	}
 
+	protected PaymentTypeData getMaestroTestData() throws ParseException {
+		DebitCardPaymentType paymentType = new DebitCardPaymentType();
+		paymentType.setBrand(com.mpay24.payment.type.DebitCardPaymentType.Brand.MAESTRO);
+		paymentType.setExpiry(getCreditCardMonthYearDate("12/2020"));
+		paymentType.setPan("6700555544444444");
+		return paymentType;
+	}
+	
+	
 	protected PaymentTypeData getMastercardTestData() throws ParseException {
 		CreditCardPaymentType paymentType = new CreditCardPaymentType();
 		paymentType.setPan("5413330089600010");

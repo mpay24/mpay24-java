@@ -176,8 +176,11 @@ public class Mpay24 {
 	}
 	
 	public void createCustomer(Customer customer, PaymentTypeData paymentTypeData) throws PaymentException {
+		createCustomer(customer, null, paymentTypeData);
+	}
+	public void createCustomer(Customer customer, String profileId, PaymentTypeData paymentTypeData) throws PaymentException {
 		PaymentType paymentType = mapper.mapPaymentTypeData(paymentTypeData);
-		com.mpay.soap.client.PaymentData paymentData = mapper.mapPaymentData(paymentTypeData);
+		com.mpay.soap.client.PaymentData paymentData = mapper.mapPaymentData(paymentTypeData, profileId);
 		Address address = mapper.mapCustomer(customer);
 		soapCommunication.createCustomer(customer.getCustomerId(), customer.getName(), address, paymentType, paymentData);
 	}
