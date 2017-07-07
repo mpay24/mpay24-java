@@ -37,7 +37,11 @@ import com.mpay24.payment.type.PaysafecardPaymentType;
 import com.mpay24.payment.type.QuickPaymentType;
 
 public abstract class AbstractTestCase {
-	protected Mpay24 mpay24 = new Mpay24("93975", "xxxx", Environment.TEST);
+	protected Mpay24 mpay24 = new Mpay24("93975", getPassword(), Environment.TEST);
+
+	protected String getPassword() {
+		return System.getProperty("mpay24.merchant.password");
+	}
 
 	protected Customer getCustomerWithAddress(String customerId, String customerName, String street2) {
 		Customer customer = getCustomer(customerId, customerName);
