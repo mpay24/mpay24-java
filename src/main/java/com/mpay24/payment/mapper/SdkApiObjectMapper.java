@@ -153,6 +153,8 @@ public class SdkApiObjectMapper {
 		Order order = new Order();
 		order.setBilling(mapCustomer(customer));
 		order.setShoppingCart(mapShoppingCart(shoppingCart));
+		order.setDescription(paymentRequest.getDescription());
+		order.setUserField(paymentRequest.getUserField());
 		return order;
 	}
 

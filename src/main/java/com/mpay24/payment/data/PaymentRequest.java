@@ -40,6 +40,7 @@ public class PaymentRequest {
 	private BigDecimal amount;
 	private String currency;
 	private String userField;
+	private String description;
 	private String successUrl;
 	private String errorUrl;
 	private String confirmationUrl;
@@ -153,6 +154,14 @@ public class PaymentRequest {
 
 	public void setSavePaymentData(boolean savePaymentData) {
 		this.savePaymentData = savePaymentData;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }
