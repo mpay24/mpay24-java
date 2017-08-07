@@ -40,7 +40,7 @@ public abstract class AbstractTestCase {
 	protected Mpay24 mpay24 = new Mpay24("93975", getPassword(), Environment.TEST);
 
 	protected String getPassword() {
-		return System.getenv("mpay24.merchant.password");
+		return System.getenv("MERCHANT_PASSWORD");
 	}
 
 	protected Customer getCustomerWithAddress(String customerId, String customerName, String street2) {
