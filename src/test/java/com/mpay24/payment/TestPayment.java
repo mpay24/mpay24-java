@@ -16,6 +16,15 @@ public class TestPayment extends AbstractTestCase {
 	public final static Logger log = Logger.getLogger(TestPayment.class);
 
 	@Test
+	public void testMaestroPayment() throws PaymentException, ParseException {
+		Payment response = mpay24.payment(getTestPaymentRequest(), getMaestroTestData(), getCustomer());
+
+		assertEquals("REDIRECT", response.getReturnCode());
+		assertNotNull(response.getmPayTid());
+	}
+
+
+	@Test
 	public void testDirectDebitB4PPayment() throws PaymentException {
 		Payment response = mpay24.payment(getTestPaymentRequest(), getDirectDebitTestData(Brand.B4P, "DE09100100101234567893", "PBNKDEFFXXX"), getCustomer());
 

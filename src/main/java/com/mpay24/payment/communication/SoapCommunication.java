@@ -216,17 +216,17 @@ public class SoapCommunication {
 		return getPaymentList(returnCodeHolder, transactionDetailsHolder);
 	}
 
-	
-	public void createCustomer(String customerId, String customerName, com.mpay.soap.client.Address address, PaymentType pType, com.mpay.soap.client.PaymentData paymentData) throws PaymentException {
+	public void createCustomer(String customerId, String customerName, com.mpay.soap.client.Address address, PaymentType pType,
+					com.mpay.soap.client.PaymentData paymentData) throws PaymentException {
 		Holder<Status> statusHolder = new Holder<Status>();
 		Holder<String> returnCodeHolder = new Holder<String>();
 		Holder<Integer> errorNumberHolder = new Holder<Integer>();
 		Holder<String> errorTextHolder = new Holder<String>();
 
-		getSoapClientProxy().createCustomer(getMerchantIdAsLong(), pType, paymentData, customerId, customerName, address, (String) null, statusHolder, returnCodeHolder, errorNumberHolder, errorTextHolder);
+		getSoapClientProxy().createCustomer(getMerchantIdAsLong(), pType, paymentData, customerId, customerName, address, (String) null, statusHolder,
+						returnCodeHolder, errorNumberHolder, errorTextHolder);
 		checkForError(statusHolder, returnCodeHolder);
 	}
-
 
 	public List<PaymentData> listProfiles(String customerId, Date expiredBy, Long begin, Long size) throws PaymentException {
 		Holder<Status> statusHolder = new Holder<Status>();
@@ -246,30 +246,38 @@ public class SoapCommunication {
 		checkForError(statusHolder, returnCodeHolder);
 	}
 
-
 	private List<PaymentData> getProfileList(Holder<String> returnCodeHolder, Holder<List<Profile>> profileListHolder) {
 		List<PaymentData> paymentDataList = new ArrayList<PaymentData>();
 		for (Profile profile : profileListHolder.value) {
-			PaymentData storedPaymentData = new PaymentData();
-			storedPaymentData.setLastUpdated(profile.getUpdated().toGregorianCalendar().getTime());
-			storedPaymentData.setCustomer(getCustomer(profile.getCustomerID()));
-			paymentDataList.add(storedPaymentData);
-			addPaymentProfileData(profile, storedPaymentData);
+			if (profile.getPayment() == null || profile.getPayment().size() == 0 ) {
+				paymentDataList.add(getProfile(profile));
+			} else {
+				for (PaymentProfile paymentProfile: profile.getPayment()) {
+					PaymentData paymentData = getProfile(profile);
+					addPaymentProfileData(paymentProfile, paymentData);
+					paymentDataList.add(paymentData);
+				}
+			}
 		}
 		
 		return paymentDataList;
 	}
 
-	private void addPaymentProfileData(Profile profile, PaymentData storedPaymentData) {
-		for (PaymentProfile pProfile : profile.getPayment()) {
-			storedPaymentData.setCustomer(getCustomerDetails(storedPaymentData.getCustomer(), pProfile.getAdress()));
-			storedPaymentData.getCustomer().setAddress(getAddress(pProfile.getAdress()));
-			storedPaymentData.setExpires(pProfile.getExpires());
-			storedPaymentData.setIdentifier(pProfile.getIdentifier());
-			storedPaymentData.setLastUpdated(pProfile.getUpdated().toGregorianCalendar().getTime());
-			storedPaymentData.setPaymentType(com.mpay24.payment.data.PaymentType.fromId(pProfile.getPMethodID().intValue()));
-			storedPaymentData.setProfileId(pProfile.getProfileID());
-		}
+	private PaymentData getProfile(Profile profile) {
+		PaymentData storedPaymentData = new PaymentData();
+		storedPaymentData.setLastUpdated(profile.getUpdated().toGregorianCalendar().getTime());
+		storedPaymentData.setCustomer(getCustomer(profile.getCustomerID()));
+		return storedPaymentData;
+	}
+
+	private void addPaymentProfileData(PaymentProfile pProfile, PaymentData storedPaymentData) {
+		storedPaymentData.setCustomer(getCustomerDetails(storedPaymentData.getCustomer(), pProfile.getAdress()));
+		storedPaymentData.getCustomer().setAddress(getAddress(pProfile.getAdress()));
+		storedPaymentData.setExpires(pProfile.getExpires());
+		storedPaymentData.setIdentifier(pProfile.getIdentifier());
+		storedPaymentData.setLastUpdated(pProfile.getUpdated().toGregorianCalendar().getTime());
+		storedPaymentData.setPaymentType(com.mpay24.payment.data.PaymentType.fromId(pProfile.getPMethodID().intValue()));
+		storedPaymentData.setProfileId(pProfile.getProfileID());
 	}
 
 	private Customer getCustomer(String customerId) {
@@ -279,17 +287,20 @@ public class SoapCommunication {
 	}
 
 	private Customer getCustomerDetails(Customer customer, com.mpay.soap.client.Address address) {
-		if (address == null) return customer;
+		if (address == null)
+			return customer;
 
 		customer.setBirthdate(address.getBirthday());
 		customer.setEmail(address.getEmail());
-		customer.setGender(com.mpay24.payment.data.Customer.Gender.valueOf(address.getGender().toString()));
+		customer.setGender(com.mpay24.payment.data.Customer.Gender.getEnum(address.getGender().toString()));
 		customer.setName(address.getName());
 		customer.setPhoneNumber(address.getPhone());
 		return customer;
 	}
+
 	private Address getAddress(com.mpay.soap.client.Address soapAddress) {
-		if (soapAddress == null) return null;
+		if (soapAddress == null)
+			return null;
 		Address address = new Address();
 		address.setCity(soapAddress.getCity());
 		address.setCountryIso2(soapAddress.getCountryCode());
@@ -395,7 +406,8 @@ public class SoapCommunication {
 	}
 
 	private Long getConvertedAmount(BigDecimal amount) {
-		if (amount == null) return null;
+		if (amount == null)
+			return null;
 		return amount.multiply(new BigDecimal(100)).longValue();
 	}
 
@@ -416,7 +428,7 @@ public class SoapCommunication {
 		return etp;
 	}
 
-	private ETP_Service getEtpService(QName qname){
+	private ETP_Service getEtpService(QName qname) {
 		try {
 			return new ETP_Service(new URL(mode.getWsdlUrl()), qname);
 		} catch (MalformedURLException e) {
@@ -482,7 +494,8 @@ public class SoapCommunication {
 		return paymentResponse;
 	}
 
-	private void checkForError(Holder<Status> statusHolder, Holder<Integer> errorNumberHolder, Holder<String> errorTextHolder, Holder<String> returnCodeHolder) throws PaymentException {
+	private void checkForError(Holder<Status> statusHolder, Holder<Integer> errorNumberHolder, Holder<String> errorTextHolder, Holder<String> returnCodeHolder)
+					throws PaymentException {
 		if (statusHolder != null && statusHolder.value != null && Status.ERROR == statusHolder.value) {
 			PaymentException exception = new PaymentException();
 			exception.setStatus(statusHolder.value);

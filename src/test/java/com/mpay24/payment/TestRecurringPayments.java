@@ -94,6 +94,8 @@ public class TestRecurringPayments extends AbstractSeleniumTestcase {
 		driver.findElement(By.id("cvc")).sendKeys("123");
 		(new Select(driver.findElement(By.id("expiry-month")))).selectByValue("05");
 		(new Select(driver.findElement(By.id("expiry-year")))).selectByValue(getYear());
+		driver.findElement(By.name("profile_id")).sendKeys("x");
+		
 		
 		driver.findElement(By.id("right")).click();
 		wait.until(ExpectedConditions.elementToBeClickable(By.id("right")));
