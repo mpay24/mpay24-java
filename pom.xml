@@ -5,7 +5,7 @@
 
 	<groupId>com.mpay24.payment</groupId>
 	<artifactId>mpay24-payment-sdk</artifactId>
-	<version>1.6.0.0</version>
+	<version>1.6.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -196,7 +196,7 @@
 		<dependency>
 			<groupId>com.mpay24.payment</groupId>
 			<artifactId>mpay24-soap-client</artifactId>
-			<version>1.5.1.0</version>
+			<version>1.5.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
