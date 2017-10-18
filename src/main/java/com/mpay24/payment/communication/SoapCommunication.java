@@ -271,8 +271,8 @@ public class SoapCommunication {
 	}
 
 	private void addPaymentProfileData(PaymentProfile pProfile, PaymentData storedPaymentData) {
-		storedPaymentData.setCustomer(getCustomerDetails(storedPaymentData.getCustomer(), pProfile.getAdress()));
-		storedPaymentData.getCustomer().setAddress(getAddress(pProfile.getAdress()));
+		storedPaymentData.setCustomer(getCustomerDetails(storedPaymentData.getCustomer(), pProfile.getAddress()));
+		storedPaymentData.getCustomer().setAddress(getAddress(pProfile.getAddress()));
 		storedPaymentData.setExpires(pProfile.getExpires());
 		storedPaymentData.setIdentifier(pProfile.getIdentifier());
 		storedPaymentData.setLastUpdated(pProfile.getUpdated().toGregorianCalendar().getTime());
