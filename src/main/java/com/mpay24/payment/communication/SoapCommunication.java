@@ -441,7 +441,10 @@ public class SoapCommunication {
 
 	private Client getSoapClient(ETP etp) {
 		Client cxfClient = ClientProxy.getClient(etp);
-		cxfClient.getOutInterceptors().add(new LoggingOutInterceptor());
+		LoggingOutInterceptor loggingOutInterceptor = new LoggingOutInterceptor();
+		loggingOutInterceptor.setPrettyLogging(true);
+//      Uncomment to log the SOAP message (including the basic authentication headers) - not for production!
+//		cxfClient.getOutInterceptors().add(loggingOutInterceptor);
 		return cxfClient;
 	}
 
