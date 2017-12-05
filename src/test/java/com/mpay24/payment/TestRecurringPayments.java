@@ -34,7 +34,6 @@ public class TestRecurringPayments extends AbstractSeleniumTestcase {
 	}
 
 	@Test
-	@Ignore
 	public void testRecurringCreditCardPayment() throws ParseException, PaymentException {
 		String customerId = "max.mustermann@gmail.com";
 		deleteProfileForTest(customerId);
