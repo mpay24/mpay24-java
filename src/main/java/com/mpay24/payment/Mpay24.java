@@ -35,7 +35,6 @@ public class Mpay24 {
 	private SoapCommunication soapCommunication;
 
 	public enum Environment {
-		INTEGRATION("https://it.mpay24.com/app/bin/etpproxy_v15", "https://it.mpay24.com/soap/etp/1.5/ETP.wsdl"), 
 		TEST("https://test.mpay24.com/app/bin/etpproxy_v15", "https://test.mpay24.com/soap/etp/1.5/ETP.wsdl"), 
 		PRODUCTION("https://www.mpay24.com/app/bin/etpproxy_v15", "https://www.mpay24.com/soap/etp/1.5/ETP.wsdl");
 
