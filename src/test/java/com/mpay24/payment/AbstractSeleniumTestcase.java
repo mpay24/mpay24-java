@@ -14,7 +14,9 @@ public class AbstractSeleniumTestcase extends AbstractTestCase {
 //	ChromeDriver chromeDriver;
 
 	protected RemoteWebDriver openFirefoxAtUrl(String url) {
-		System.setProperty("webdriver.gecko.driver", "/Users/rene.felder/Documents/company/partner/mpay24/Development/Geckodriver/geckodriver");
+		String geckoDriver = getGeckoDriver();
+		if (geckoDriver != null)
+			System.setProperty("webdriver.gecko.driver", geckoDriver);
 		driver = new FirefoxDriver();
 		driver.get(url);
 		return driver;
@@ -24,6 +26,11 @@ public class AbstractSeleniumTestcase extends AbstractTestCase {
 //		return driver;
 	}
 	
+	// Define your desired webdriver  Run -> Run Configurations... -> (JUnit/mpay24-java) -> Environment
+	protected String getGeckoDriver() {
+		return System.getenv("GECKO_DRIVER");
+	}
+
 	protected void closeFirefox() {
 		if (driver != null) driver.quit();
 	}
