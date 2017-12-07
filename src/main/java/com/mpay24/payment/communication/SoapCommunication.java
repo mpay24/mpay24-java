@@ -292,7 +292,9 @@ public class SoapCommunication {
 
 		customer.setBirthdate(address.getBirthday());
 		customer.setEmail(address.getEmail());
-		customer.setGender(com.mpay24.payment.data.Customer.Gender.getEnum(address.getGender().toString()));
+		if (address.getGender() != null) {
+			customer.setGender(com.mpay24.payment.data.Customer.Gender.getEnum(address.getGender().toString()));
+		}
 		customer.setName(address.getName());
 		customer.setPhoneNumber(address.getPhone());
 		return customer;
