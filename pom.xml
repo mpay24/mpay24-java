@@ -5,7 +5,7 @@
 
 	<groupId>com.mpay24.payment</groupId>
 	<artifactId>mpay24-payment-sdk</artifactId>
-	<version>1.6.3.0</version>
+	<version>1.6.2.0</version>
 	<packaging>jar</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -160,7 +160,7 @@
 			</plugin>
 		</plugins>
 
-		<!--This plugin's configuration is used to store Eclipse m2e settings only. 
+		<!--This plugin's configuration is used to store Eclipse m2e settings only.
 			It has no influence on the Maven build itself. -->
 		<pluginManagement>
 			<plugins>
@@ -196,7 +196,7 @@
 		<dependency>
 			<groupId>com.mpay24.payment</groupId>
 			<artifactId>mpay24-soap-client</artifactId>
-			<version>1.5.2.0</version>
+			<version>1.5.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
