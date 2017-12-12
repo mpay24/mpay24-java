@@ -69,7 +69,7 @@ public class SdkApiObjectMapper {
 			return PaymentType.ELV;
 		} else if (paymentType instanceof CreditCardPaymentType) {
 			return PaymentType.CC;
-		} else if (paymentType instanceof CreditCardPaymentType) {
+		} else if (paymentType instanceof TokenPaymentType) {
 			return PaymentType.TOKEN;
 		} else {
 			throw new UnsupportedOperationException("Currently this method only supports the following Payment types: DirectDebit, CreditCard");
