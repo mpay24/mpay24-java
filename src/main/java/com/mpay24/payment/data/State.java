@@ -16,6 +16,7 @@ public enum State {
     ARCHIVED,
     WITHDRAW,
     WITHDRAWN,
+    REVERSAL,
 	
     NOTFOUND,
     FAILED,
