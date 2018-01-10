@@ -19,6 +19,5 @@ public enum State {
     REVERSAL,
 	
     NOTFOUND,
-    FAILED,
-
+    FAILED
 }

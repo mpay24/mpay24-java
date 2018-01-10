@@ -1,4 +1,7 @@
 # mpay24-java
+
+[![Build Status](https://travis-ci.org/mpay24/mpay24-java.svg?branch=master)](https://travis-ci.org/mpay24/mpay24-java)
+
 Offical mPAY24 Java Payment SDK
 
 ## Requirements

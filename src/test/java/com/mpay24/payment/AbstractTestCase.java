@@ -37,10 +37,19 @@ import com.mpay24.payment.type.PaysafecardPaymentType;
 import com.mpay24.payment.type.QuickPaymentType;
 
 public abstract class AbstractTestCase {
-	protected Mpay24 mpay24 = new Mpay24("93975", getPassword(), Environment.TEST);
+	protected Mpay24 mpay24 = new Mpay24(getMerchantId(), getPassword(), Environment.TEST);
+	
+	// Define your Testsystem account under  Run -> Run Configurations... -> (JUnit/mpay24-java) -> Environment
+	protected String getMerchantId() {
+		String merchantId = System.getenv("MERCHANT_ID");
+		assertNotNull(merchantId);
+		return merchantId;
+	}
 
 	protected String getPassword() {
-		return System.getProperty("mpay24.merchant.password");
+		String password = System.getenv("MERCHANT_PASSWORD");
+		assertNotNull(password);
+		return password;
 	}
 
 	protected Customer getCustomerWithAddress(String customerId, String customerName, String street2) {
