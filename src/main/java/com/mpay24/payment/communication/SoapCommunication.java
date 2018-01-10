@@ -423,6 +423,10 @@ public class SoapCommunication {
 		ETP etp = etpService.getETP();
 		setBindingParameter(etp);
 		Client cxfClient = getSoapClient(etp);
+
+		if (mode == Environment.INTEGRATION)
+			disableCertificateChecks(cxfClient);
+		
 		return etp;
 	}
 

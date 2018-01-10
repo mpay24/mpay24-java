@@ -44,6 +44,7 @@ public class PaymentRequest {
 	private String successUrl;
 	private String errorUrl;
 	private String confirmationUrl;
+	private String cancelUrl;
 	private String token;
 	private Language language;
 	private boolean savePaymentData = false;
@@ -162,6 +163,14 @@ public class PaymentRequest {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getCancelUrl() {
+		return cancelUrl;
+	}
+
+	public void setCancelUrl(String cancelUrl) {
+		this.cancelUrl = cancelUrl;
 	}
 
 }
