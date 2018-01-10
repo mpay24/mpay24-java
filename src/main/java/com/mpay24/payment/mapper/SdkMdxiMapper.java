@@ -157,6 +157,7 @@ public class SdkMdxiMapper {
 		url.setSuccess(paymentsRequest.getSuccessUrl());
 		url.setError(paymentsRequest.getErrorUrl());
 		url.setConfirmation(paymentsRequest.getConfirmationUrl());
+		url.setCancel(paymentsRequest.getCancelUrl());
 		return url;
 	}
 
